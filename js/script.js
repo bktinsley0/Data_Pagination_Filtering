@@ -11,8 +11,9 @@ function showPage(list, page) {
   const startIndex = page * 9 - 9;
   const endIndex = page * 9;
   const studentList = document.querySelector(".student-list");
-  studentList.innerHTML = "";
-  for (let i = 0; i < list.length; i++) {
+    studentList.innerHTML = "";
+if(list.length > 0){  
+    for (let i = 0; i < list.length; i++) {
     if (i >= startIndex && i < endIndex) {
       const studentItem = `
       <li class="student-item cf">
@@ -28,6 +29,18 @@ function showPage(list, page) {
       `;
       studentList.insertAdjacentHTML("beforeend", studentItem);
     }
+  }
+}
+  if (list.length === 0) {
+    console.log("No results found");
+
+    const noResults = `
+      <li class="student-item cf">
+        <h3>No results found</h3>
+        </li>
+        `;
+
+    studentList.innerHTML = noResults;
   }
 }
 
@@ -47,8 +60,11 @@ function addPagination(list) {
     `;
     linkList.insertAdjacentHTML("beforeend", button);
   }
+
   const firstButton = document.querySelector(".link-list button");
-  firstButton.className = "active";
+  if (firstButton) {
+    firstButton.className = "active";
+  }
   linkList.addEventListener("click", (e) => {
     if (e.target.tagName === "BUTTON") {
       const activeButton = document.querySelector(".active");
@@ -58,6 +74,43 @@ function addPagination(list) {
     }
   });
 }
+function searchStudents(searchValue) {
+  const filteredStudents = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const studentName = `${data[i].name.first} ${data[i].name.last}`;
+    if (studentName.toLowerCase().includes(searchValue)) {
+      filteredStudents.push(data[i]);
+    }
+    }
+     showPage(filteredStudents, 1);
+    addPagination(filteredStudents);
+  
+}
+/**
+ * Create the `addSearchBar` function
+ */
+function addSearchBar() {
+  const header = document.querySelector(".header");
+  const searchBar = `
+  <label for="search" class="student-search">
+    <input id="search" placeholder="Search by name...">
+    <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+  </label>
+  `;
+  header.insertAdjacentHTML("beforeend", searchBar);
+
+  const searchInput = document.querySelector("#search");
+
+  searchInput.addEventListener("change", (e) => {
+    searchStudents(e.target.value.toLowerCase());
+  });
+  searchInput.addEventListener("keyup", (e) => {
+    searchStudents(e.target.value.toLowerCase());
+  });
+}
+
 // Call functions
 showPage(data, 1);
 addPagination(data);
+addSearchBar();
