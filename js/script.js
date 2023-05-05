@@ -74,6 +74,7 @@ function addPagination(list) {
     }
   });
 }
+// Create the `searchStudents` function - This function will search the list of students for the search input
 function searchStudents(searchValue) {
   const filteredStudents = [];
 
@@ -88,7 +89,7 @@ function searchStudents(searchValue) {
   
 }
 /**
- * Create the `addSearchBar` function
+ * Create the `addSearchBar` function to add the search bar to the page
  */
 function addSearchBar() {
   const header = document.querySelector(".header");
